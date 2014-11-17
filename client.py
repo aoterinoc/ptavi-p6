@@ -21,15 +21,12 @@ PORT = int(DATOS[1][1])
 RECEPTOR = DATOS[0]
 
 
-
-
-
 # Creamos el socket, lo configuramos y lo atamos a un servidor/puerto
 my_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 my_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 my_socket.connect((SERVER, PORT))
 
-LINE = METODO.upper() + " sip:" + RECEPTOR+ "@" + SERVER + " SIP/2.0"
+LINE = METODO.upper() + " sip:" + RECEPTOR+ "@" + SERVER + " SIP/2.0\r\n"
 print LINE
 print "Enviando: " + LINE
 my_socket.send(LINE + '\r\n')
@@ -37,7 +34,19 @@ my_socket.send(LINE + '\r\n')
 #Excepcion en caso de establecer conexion con un puerto no abierto
 try:
     data = my_socket.recv(1024)
-    print 'Recibido -- ', data
+    print 'Recibido -- '
+    print data
+    trying = "SIP/2.0 100 Trying\r\n\r\n"
+    ring = "SIP/2.0 180 Ring\r\n\r\n"
+    ok = "SIP/2.0 200 OK\r\n\r\n"
+    respuesta = trying + ring + ok
+    if data == respuesta:
+        print "He recibido las respuestas 100,180,200 mando ACK"
+        asentimiento = "ACK" + " sip:" + RECEPTOR+ "@" + SERVER + " SIP/2.0\r\n\r\n"
+        my_socket.send(asentimiento)
+
+    #Se acaba el streaming RTP mando BYE
+    finaliza = "BYE" + " sip:" + RECEPTOR+ "@" + SERVER + " SIP/2.0\r\n\r\n"
 except (socket.error):
     print "No server listening at " + str(SERVER) + " port " + str(PORT)
     sys.exit()
