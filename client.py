@@ -40,9 +40,9 @@ try:
     if data == 'SIP/2.0 400 Bad Request\r\n\r\n':
         sys.exit()
     trying = "SIP/2.0 100 Trying\r\n\r\n"
-    ring = "SIP/2.0 180 Ring\r\n\r\n"
+    ringing = "SIP/2.0 180 Ringing\r\n\r\n"
     ok = "SIP/2.0 200 OK\r\n\r\n"
-    respuesta = trying + ring + ok
+    respuesta = trying + ringing + ok
     if data == respuesta:
         print "He recibido las respuestas 100,180,200 mando ACK"
         sip = " SIP/2.0\r\n\r\n"
