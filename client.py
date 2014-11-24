@@ -36,6 +36,9 @@ try:
     data = my_socket.recv(1024)
     print 'Recibido -- '
     print data
+   
+    if data == 'SIP/2.0 400 Bad Request\r\n\r\n':
+        sys.exit()  #ESTO ESTA BIEN ASI???
     trying = "SIP/2.0 100 Trying\r\n\r\n"
     ring = "SIP/2.0 180 Ring\r\n\r\n"
     ok = "SIP/2.0 200 OK\r\n\r\n"
@@ -43,10 +46,9 @@ try:
     if data == respuesta:
         print "He recibido las respuestas 100,180,200 mando ACK"
         asentimiento = "ACK" + " sip:" + RECEPTOR+ "@" + SERVER + " SIP/2.0\r\n\r\n"
+        print "Enviando: " + asentimiento
         my_socket.send(asentimiento)
 
-    #Se acaba el streaming RTP mando BYE
-    finaliza = "BYE" + " sip:" + RECEPTOR+ "@" + SERVER + " SIP/2.0\r\n\r\n"
 except (socket.error):
     print "No server listening at " + str(SERVER) + " port " + str(PORT)
     sys.exit()
