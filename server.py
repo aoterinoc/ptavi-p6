@@ -9,7 +9,6 @@ import sys
 import os.path
 import os
 
-
 METODOS_ACEPTADOS = ["INVITE", "BYE", "ACK"]
 
 
@@ -45,10 +44,11 @@ class EchoHandler(SocketServer.DatagramRequestHandler):
                     cod_respuesta = trying + ring + ok
                     self.wfile.write(cod_respuesta)
                 if line[0] not in METODOS_ACEPTADOS:
-                    self.wfile.write("SIP/2.0 405 Method Not Allowed\r\n\r\n")       
+                    self.wfile.write("SIP/2.0 405 Method Not Allowed\r\n\r\n")
                 if line[0] == "ACK":
                     print "Me llega ack envio RTP"
-                    aEjecutar = './mp32rtp -i 127.0.0.1 -p 23032 <' + FICHERO_AUDIO
+                    comando_rtp = './mp32rtp -i 127.0.0.1 -p 23032 <'
+                    aEjecutar = comando_rtp + FICHERO_AUDIO
                     os.system(aEjecutar)
                     print "Se acaba la transmision de RTP"
                 if line[0] == "BYE":
