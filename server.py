@@ -39,9 +39,9 @@ class EchoHandler(SocketServer.DatagramRequestHandler):
                 line = line.split()
                 if line[0] == "INVITE":
                     trying = "SIP/2.0 100 Trying\r\n\r\n"
-                    ring = "SIP/2.0 180 Ring\r\n\r\n"
+                    ringing = "SIP/2.0 180 Ringing\r\n\r\n"
                     ok = "SIP/2.0 200 OK\r\n\r\n"
-                    cod_respuesta = trying + ring + ok
+                    cod_respuesta = trying + ringing + ok
                     self.wfile.write(cod_respuesta)
                 if line[0] not in METODOS_ACEPTADOS:
                     self.wfile.write("SIP/2.0 405 Method Not Allowed\r\n\r\n")
