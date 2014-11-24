@@ -26,7 +26,7 @@ my_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 my_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 my_socket.connect((SERVER, PORT))
 
-LINE = METODO.upper() + " sip:" + RECEPTOR+ "@" + SERVER + " SIP/2.0\r\n"
+LINE = METODO.upper() + " sip:" + RECEPTOR + "@" + SERVER + " SIP/2.0\r\n"
 print LINE
 print "Enviando: " + LINE
 my_socket.send(LINE + '\r\n')
@@ -36,7 +36,7 @@ try:
     data = my_socket.recv(1024)
     print 'Recibido -- '
     print data
-   
+
     if data == 'SIP/2.0 400 Bad Request\r\n\r\n':
         sys.exit()  #ESTO ESTA BIEN ASI???
     trying = "SIP/2.0 100 Trying\r\n\r\n"
@@ -45,7 +45,7 @@ try:
     respuesta = trying + ring + ok
     if data == respuesta:
         print "He recibido las respuestas 100,180,200 mando ACK"
-        asentimiento = "ACK" + " sip:" + RECEPTOR+ "@" + SERVER + " SIP/2.0\r\n\r\n"
+        asentimiento = "ACK" + " sip:" + RECEPTOR + "@" + SERVER + " SIP/2.0\r\n\r\n"
         print "Enviando: " + asentimiento
         my_socket.send(asentimiento)
 
